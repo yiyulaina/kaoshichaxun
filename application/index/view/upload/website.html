@@ -1,0 +1,81 @@
+{extend name="base/base"/}
+{block name="extern"}
+{/block}
+{block name="content"}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">获取发布信息URL</a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-form-item">
+                <div style="margin-left: 110px; width: 700px;">
+                    <input id="url" type="text" autocomplete="off" class="layui-input" style="display:inline;width: 500px; margin-right: 10px;" value="{$url}"/>
+                    <button class="layui-btn" onclick="copyToClipboard()">复制该地址</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label"></label>
+            {if condition="$type eq 1"}
+                <button class="layui-btn" onclick="location.href='/index/upload/index';">完成</button>
+            {elseif condition="$type eq 2"}
+                <button class="layui-btn" onclick="location.href='/index/upload/index_zxks';">完成</button>
+            {elseif condition="$type eq 3"}
+                {if condition="$go eq 1"}
+                    <button class="layui-btn" onclick="location.href='/index/upload/index_zsxx';">完成</button>
+                {else}
+                    <button class="layui-btn" onclick="complete()">完成</button>
+                {/if}
+            {elseif condition="$type eq 4"}
+                <button class="layui-btn" onclick="location.href='/index/upload/index_crgk_lq';">完成</button>
+            {/if}
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+    <script>
+        function complete(){
+            //关闭当前frame
+            xadmin.close();
+    
+            // 可以对父窗口进行刷新 
+            xadmin.father_reload();
+        }
+        function copyToClipboard(){
+            var text = $('#url').val();
+            if(text.indexOf('-') !== -1) {
+                let arr = text.split('-');
+                text = arr[0] + arr[1];
+            }
+            var textArea = document.createElement("textarea");
+              textArea.style.position = 'fixed';
+              textArea.style.top = '0';
+              textArea.style.left = '0';
+              textArea.style.width = '2em';
+              textArea.style.height = '2em';
+              textArea.style.padding = '0';
+              textArea.style.border = 'none';
+              textArea.style.outline = 'none';
+              textArea.style.boxShadow = 'none';
+              textArea.style.background = 'transparent';
+              textArea.value = text;
+              document.body.appendChild(textArea);
+              textArea.select();
+        
+              try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? '成功复制到剪贴板' : '该浏览器不支持点击复制到剪贴板';
+               alert(msg);
+              } catch (err) {
+                alert('该浏览器不支持点击复制到剪贴板');
+              }
+        
+              document.body.removeChild(textArea);
+        }
+    </script>
+{/block}

@@ -1,0 +1,78 @@
+{extend name="base/base"/}
+{block name="extern"}
+    <script type="text/javascript" charset="utf-8" src="__JS__/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__JS__/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__JS__/ueditor/lang/zh-cn/zh-cn.js"></script>
+{/block}
+{block name="content"}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">成绩发布</a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+      </a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="formid" action="{:url('upload/add')}" method='post' enctype="multipart/form-data">
+                <input type="hidden" name="go" value="{$go}"/>
+                {if condition='$go eq 1'}
+                    <input type="hidden" name="number" value="{$number}"/>
+                {/if}
+                <div class="layui-form-item" style="position: relative;z-index: 10000;">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>信息主体类型</label>
+                    <div class="layui-input-inline">
+                        <select name="class" {if condition="$go eq 1"}disabled="disabled"{/if}>
+                            {volist name='type' id="v"}
+                                {if condition='($v.type_id neq 3)'}
+                                    <option <?php if($go == 1 && $v['type_id'] == $news['news_type']){ ?>selected="selected"<?php } ?> value="{$v.type_id}">{$v.type_title}</option>
+                                {/if}
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>信息内容名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="title" name="title" required="" lay-verify="required" autocomplete="off" class="layui-input" value="{if condition='$go eq 1'}{$news.news_title}{/if}" /></div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label for="desc" class="layui-form-label">考试说明</label>
+                    <div class="layui-input-block">
+                        <script id="editor" type="text/plain" style="width:1024px;height:500px;">
+                            {if condition='$go eq 1'}{$news.news_body}{/if}
+                        </script>
+                        <textarea id="desc" name="desc" style="display: none;">{if condition='$go eq 1'}{$news.news_body}{/if}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">{if condition="$go eq 1"}完成{else/}下一页{/if}</button></div>
+            </form>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+    <script>
+        var ue = UE.getEditor('editor');
+        layui.use(['form', 'layer'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+            layer = layui.layer;
+
+            //监听提交
+            form.on('submit(add)',
+            function(data) {
+                var desc = UE.getEditor('editor').getContent();
+                $('#desc').val(desc);
+                document.getElementById('formid').submit();
+            });
+
+        });
+    </script>
+{/block}

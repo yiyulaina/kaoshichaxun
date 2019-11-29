@@ -1,0 +1,334 @@
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>后台登录</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="stylesheet" href="__CSS__/font.css"/>
+        <link rel="stylesheet" href="__CSS__/xadmin.css"/>
+        <!-- <link rel="stylesheet" href="__CSS__/theme5.css"> -->
+        <script src="__LIB__/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="__JS__/xadmin.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script>
+            // 是否开启刷新记忆tab功能
+            // var is_remember = false;
+            function tab_close(id){
+                $('.layui-tab-title li[lay-id='+id+']').find('.layui-tab-close').click();
+            }
+        </script>
+    {block name="extern"}
+    {/block}
+    </head>
+    
+    <body class="index">
+        <!-- 顶部开始 -->
+        <div class="container">
+            <div class="logo">
+                <a href="/">后台系统</a></div>
+            <div class="left_open">
+                <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
+            </div>
+            <ul class="layui-nav right" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">{$Think.session.name}</a>
+                    <dl class="layui-nav-child">
+                        <!-- 二级菜单 -->
+                        <dd>
+                            <a onclick="if (confirm('确定要退出吗？')) return true; else return false;" href="{:url('login/logout')}">退出</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item to-index">
+                    <a href="/">前台首页</a></li>
+            </ul>
+        </div>
+        <?php 
+            $uid = session('uid');
+            if($uid != 1&&$uid != 2){
+                $user = db('user')->where('user_id',$uid)->find(); 
+                $roles = db('roles')->where('roles_id',$user['user_grade'])->find();
+                $qx = db('nodes')->field(['concat(nodes_controller,"/",nodes_method)'=>'lj'])->where('nodes_id in ('.$roles['roles_nodes'].')')->select();
+                $qx = array_column($qx, 'lj');
+            }else{
+                $qx = 'admin';
+            }
+        ?>
+        <!-- 顶部结束 -->
+        <!-- 中部开始 -->
+        <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+            <div id="side-nav">
+                <ul id="nav">
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="发布成绩管理">&#xe723;</i>
+                                <cite>发布成绩管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i>
+                            </a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('发布成绩','{:url('upload/add')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>发布成绩</cite>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Upload/add',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="发布成绩管理">&#xe723;</i>
+                                    <cite>发布成绩管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('发布成绩','{:url('upload/add')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>发布成绩</cite>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="成人高考管理">&#xe723;</i>
+                                <cite>成人高考管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('upload/index')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Upload/index',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="成人高考管理">&#xe723;</i>
+                                    <cite>成人高考管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('upload/index')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="成人高考录取管理">&#xe723;</i>
+                                <cite>成人高考录取管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_crgk_lq')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Upload/index_crgk_lq',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="成人高考录取管理">&#xe723;</i>
+                                    <cite>成人高考录取管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_crgk_lq')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="自学考试管理">&#xe723;</i>
+                                <cite>自学考试管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_zxks')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Upload/index_zxks',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="自学考试管理">&#xe723;</i>
+                                    <cite>自学考试管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_zxks')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="研究生信息管理">&#xe723;</i>
+                                <cite>研究生信息管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_zsxx')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Upload/index_zsxx',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="研究生信息管理">&#xe723;</i>
+                                    <cite>研究生信息管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_zsxx')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="艺术类考试成绩管理">&#xe723;</i>
+                                <cite>研究生信息管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_ysks')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Upload/index_ysks',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="艺术类考试成绩管理">&#xe723;</i>
+                                    <cite>研究生信息管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('upload/index_ysks')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe723;</i>
+                                <cite>用户管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('user/index')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('User/index',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe723;</i>
+                                    <cite>用户管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('user/index')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                    {if condition="$qx eq 'admin'"}
+                        <li>
+                            <a href="javascript:;">
+                                <i class="iconfont left-nav-li" lay-tips="角色管理">&#xe723;</i>
+                                <cite>角色管理</cite>
+                                <i class="iconfont nav_right">&#xe697;</i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a onclick="xadmin.add_tab('信息列表','{:url('roles/index')}',true)">
+                                        <i class="iconfont">&#xe6a7;</i>
+                                        <cite>信息列表</cite></a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        {if condition="in_array('Roles/index',$qx)"}
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="iconfont left-nav-li" lay-tips="角色管理">&#xe723;</i>
+                                    <cite>角色管理</cite>
+                                    <i class="iconfont nav_right">&#xe697;</i></a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a onclick="xadmin.add_tab('信息列表','{:url('roles/index')}',true)">
+                                            <i class="iconfont">&#xe6a7;</i>
+                                            <cite>信息列表</cite></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/if}
+                    {/if}
+                </ul>
+            </div>
+        </div>
+        <!-- <div class="x-slide_left"></div> -->
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <style id="theme_style"></style>
+        {block name="content"}
+        {/block}
+        <!-- 右侧主体结束 -->
+        <!-- 中部结束 -->
+    </body>
+    {block name="script"}
+    {/block}
+</html>

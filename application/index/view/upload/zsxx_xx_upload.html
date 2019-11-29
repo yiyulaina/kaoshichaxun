@@ -1,0 +1,236 @@
+{extend name="base/base"/}
+{block name="extern"}
+{/block}
+{block name="content"}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">研究生信息上传</a>
+      </span>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="formid" action="{:url('upload/zsxx_xx_upload')}" method='post' enctype="multipart/form-data">
+                <input type="hidden" name="go" value="{$go}"/>
+                <input type="hidden" name="number" value="{$number}"/>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>上传方式</label>
+                    <div class="layui-input-inline">
+                        <select id="mode" name="mode">
+                            <option value="1">完全覆盖</option>
+                            <option value="2">数据追加</option>
+                            <option value="3">删除数据</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label for="desc" class="layui-form-label">备注信息</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" id="desc" name="desc" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>分数dbf文件</label>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button type="button" class="layui-btn" id="files">
+                                <i class="layui-icon">&#xe67c;</i>上传DBF
+                            </button>
+                        </div>
+                </div>
+                <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">{if condition="$go eq 1"}完成{else/}下一页{/if}</button></div>
+            </form>
+        </div>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body ">
+                        <div class="x-nav">
+                            <span class="layui-breadcrumb">
+                                <a href="">历史上传数据</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="layui-card-body ">
+                        <table class="layui-table layui-form">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>所属信息</th>
+                                    <th>上传日期</th>
+                                    <th>上传文件名称</th>
+                                    <th>上传方式</th>
+                                    <th>备注信息</th>
+                                    <th>导入/导入时间</th>
+                                    <th>操作</th>
+                            </thead>
+                            <tbody>
+                                {volist name='upload' id="v"}
+                                    <tr>
+                                        <td>{$v.upload_files_id}</td>
+                                        <td>{$v.news_title}</td>
+                                        <td>{$v.upload_files_addtime|date='Y-m-d H:i:s',###}</td>
+                                        <td>{$v.upload_files_name}</td>
+                                        <td>
+                                            {if condition="$v.upload_files_mode eq 1"}
+                                                完全覆盖
+                                            {elseif condition="$v.upload_files_mode eq 2"}
+                                                数据追加
+                                            {elseif condition="$v.upload_files_mode eq 3"}
+                                                删除数据
+                                            {/if}
+                                        </td>
+                                        <td>{$v.upload_files_body}</td>
+                                        <td class="td-status">
+                                            {if condition="$v.upload_files_type eq 1"}
+                                                {$v.upload_files_drtime|date='Y-m-d H:i:s',###}
+                                            {else/}
+                                                <a onclick="member_handle({$v.upload_files_id})" href="javascript:void(0);"  title="导入">
+                                                    <span class="layui-btn layui-btn-normal layui-btn-mini">导入</span>
+                                                </a>
+                                            {/if}
+                                        </td>
+                                        <td class="td-manage">
+                                            <a title="删除" onclick="member_del({$v.upload_files_id})" href="javascript:void(0);">
+                                                <i class="layui-icon">&#xe640;</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="layui-card-body ">
+                        <div class="page">
+                            {$upload->render()}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+    <script>
+        layui.use(['form', 'layer'],function(){
+            $ = layui.jquery;
+            var form = layui.form,
+            layer = layui.layer;
+                
+            //自定义验证规则
+            form.verify({
+                end: function(value) {
+                    if (!value.length) {
+                        return '必填项不能为空';
+                    }
+                    if (!isNaN($('#start').val())||isNaN(Date.parse($('#start').val()))) {
+                        return '开始时间格式错误';
+                    }
+                    if (!isNaN($('#end').val())||isNaN(Date.parse($('#end').val()))) {
+                        return '结束时间格式错误';
+                    }
+                    if ($('#start').val() >= $('#end').val()) {
+                        return '结束时间必须大于开始时间';
+                    }
+                },
+            });
+    
+            //监听提交
+            form.on('submit(add)',
+            function(data) {
+                document.getElementById('formid').submit();
+            });
+        });
+
+        /*dbf文件-删除*/
+        function member_del(id) {
+            layer.confirm('确认要删除吗？',
+            function(index) {
+                //发异步删除数据
+                $.ajax({
+                    type:"POST",
+                    url: '{:url("upload/upload_del")}',
+                    data:{"id":id},
+                    success:function (data) {
+                        if(data.type==1){
+                            layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2},function(){
+                                location.reload();
+                            });
+                        }else if(data.type == 2){
+                            layer.alert( data.error , {icon: 2,time:3000,shade:0.2});
+                        }else{
+                            layer.alert( '未知错误请联系管理员' , {icon: 2,time:3000,shade:0.2});
+                        }
+                    }
+                })
+            });
+        }
+
+        /*dbf文件-导入*/
+        function member_handle(id) {
+            layer.confirm('确认要导入吗？',
+            function(index) {
+				var index = layer.load(); //换了种风格
+                //发异步导入数据
+                $.ajax({
+                    type:"POST",
+                    url: '{:url("upload/handle")}',
+                    data:{"id":id},
+                    success:function (data) {
+                        if(data.type==1){
+                            layer.msg('导入成功！', {icon: 1,time:2000,shade:0.2},function(){
+                                location.reload();
+                            });
+                        }else if(data.type == 2){
+							layer.close(index);
+                            layer.alert( data.error , {icon: 2,time:3000,shade:0.2});
+                        }else{
+							layer.close(index);
+                            layer.alert( '未知错误请联系管理员' , {icon: 2,time:3000,shade:0.2});
+                        }
+                    }
+                })
+            });
+        }
+    </script>
+    <script>
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#files' //绑定元素
+                ,field: 'files'
+                ,url: '{:url("upload/upload_dbf")}' //上传接口
+                ,data: {id: {$number},type:'1',body:function(){return $('#desc').val();},mode:function(){return $('#mode').val();}} //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+				,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+					layer.load(); //上传loading
+				}
+                ,done: function(res){
+                    //上传完毕回调
+                    if(res.type == 1){
+                        layer.alert( '上传成功' , {icon: 1,time:2000,shade:0.2},function(){
+                            location.reload();
+                        });
+                    }else if(res.type == 2){
+						layer.closeAll();
+                        layer.alert( res.error , {icon: 2,time:3000,shade:0.2});
+                    }else{
+						layer.closeAll();
+                        layer.alert( '未知错误请联系管理员' , {icon: 2,time:3000,shade:0.2});
+                    }
+                }
+                ,error: function(){
+                    //请求异常回调
+					layer.closeAll();
+                    layer.alert( '请检查网络' , {icon: 2,time:3000,shade:0.2});
+                }
+                ,accept: 'file' //允许上传的文件类型
+            });
+        });
+    </script>
+{/block}

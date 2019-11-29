@@ -1,0 +1,174 @@
+{extend name="base/base"/}
+{block name="extern"}
+{/block}
+{block name="content"}
+        <div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">自学考试管理</a>
+            <a>
+              <cite>信息管理</cite></a>
+          </span>
+          <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form action="{:url('upload/index_zxks')}" class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input"  autocomplete="off" lay-verify="start" placeholder="开始日" name="start" id="start" value="{$Think.get.start}"/>
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input"  autocomplete="off" lay-verify="end" placeholder="截止日" name="end" id="end" value="{$Think.get.end}"/>
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="username"  placeholder="请输入标题" autocomplete="off" class="layui-input" value="{$Think.get.username}"/>
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" lay-filter="checkall" name=""  lay-skin="primary">
+                                        </th>
+                                        <th>ID</th>
+                                        <th>项目名称</th>
+                                        <th>创建时间</th>
+                                        <th>项目起始日期</th>
+                                        <th>上传数据</th>
+                                        <th>查询条件</th>
+                                        <th>链接地址</th>
+                                        <th>存入redis</th>
+                                        <th>查询日志</th>
+                                        <th>数据校验</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name='upload' id="v"}
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name=""  lay-skin="primary">
+                                            </td>
+                                            <td>{$v.news_id}</td>
+                                            <td>
+                                                {$v.news_title}
+                                                <a href="/index/upload/add?number={$v.news_id}&&go=1">
+                                                    <img src="__IMG__/u237.png"/> 编辑
+                                                </a>
+                                            </td>
+                                            <td>{$v.news_addtime|date='Y-m-d',###}</td>
+                                            <td>
+                                                <span style="margin-right: 20px;">
+                                                    {if condition="($v.news_start_time neq 0)"}
+                                                        {$v.news_start_time|date='Y-m-d H:i:s',###}
+                                                    {/if}
+                                                    至
+                                                    {if condition="($v.news_end_time neq 0)"}
+                                                        {$v.news_end_time|date='Y-m-d H:i:s',###}
+                                                    {/if}
+                                                </span>
+                                                <a href="/index/upload/time?number={$v.news_id}&&go=1">
+                                                    <img src="__IMG__/u237.png"/> 编辑
+                                                </a>
+                                            </td>
+                                            <td align="center"><a href="/index/upload/crgk_km_upload?number={$v.news_id}&&go=1"><img src="__IMG__/u234.png"/></a></td>
+                                            <td align="center"><a href="/index/upload/custom_query?number={$v.news_id}&&go=1"><img src="__IMG__/u228.png"/></a></td>
+                                            <td align="center"><a href="/index/upload/website?number={$v.news_id}&&go=1"><img src="__IMG__/u230.png"/></a></td>
+                                            <td align="center"><a href="/index/upload/redis_dr?number={$v.news_id}&&go=1"><img src="__IMG__/21.png"/></a></td>
+                                            <td align="center"><a href="/index/journal/index?number={$v.news_id}"><img src="__IMG__/u262.png"/></a></td>
+                                            <td align="center"><a href="/index/data/index_zxks?number={$v.news_id}"><img src="__IMG__/u262.png"/></a></td>
+                                            <td class="td-manage">
+                                                <a title="删除" onclick="if_confirm({$v.news_id})" href="javascript:void(0);">
+                                                    <i class="layui-icon">&#xe640;</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="layui-card-body ">
+                            <div class="page">
+                                {$upload->render()}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{/block}
+{block name="script"}
+    <script>
+        layui.use(['laydate','form'], function(){
+            var laydate = layui.laydate;
+            var form = layui.form;
+            
+            //自定义验证规则
+            form.verify({
+                start: function(value) {
+                    if($('#start').val() != ''){
+                        if (!isNaN($('#start').val())||isNaN(Date.parse($('#start').val()))) {
+                            return '开始时间格式错误';
+                        }
+                    }
+                },
+                end: function(value) {
+                    if($('#end').val() != ''||$('#start').val() != ''){
+                        if (!isNaN($('#end').val())||isNaN(Date.parse($('#end').val()))) {
+                            return '结束时间格式错误';
+                        }
+                        if ($('#start').val() > $('#end').val()) {
+                            return '结束时间必须大于开始时间';
+                        }
+                    }
+                },
+            });
+            
+            // 监听全选
+            form.on('checkbox(checkall)', function(data){
+    
+              if(data.elem.checked){
+                $('tbody input').prop('checked',true);
+              }else{
+                $('tbody input').prop('checked',false);
+              }
+              form.render('checkbox');
+            }); 
+            
+            
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+            
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+        });
+        
+        /*用户-删除*/
+        function member_del(obj,id){
+            layer.confirm('确认要删除吗？',function(index){
+                //发异步删除数据
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon:1,time:1000});
+            });
+        }
+
+        function if_confirm(id) {
+            layer.confirm('确认要删除吗？',function(index){
+                window.location.href = '/index/upload/news_del?id='+id;
+            });
+        }
+    </script>
+{/block}

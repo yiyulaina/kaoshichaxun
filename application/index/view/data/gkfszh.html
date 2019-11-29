@@ -1,0 +1,26 @@
+{extend name="base/base"/}
+{block name="extern"}
+{/block}
+{block name="content"}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">分科统计分数</a>
+      </span>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form">
+                {volist name='sum' id="v"}
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label" style="width: 250px;">{$v.KMM}</label>
+                            <div class="layui-input-inline">
+                                <input type="text" readonly class="layui-input" value="{$v.zs}"/>
+                            </div>
+                    </div>
+                {/volist}
+            </form>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+{/block}

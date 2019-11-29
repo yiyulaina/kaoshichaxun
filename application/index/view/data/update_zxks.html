@@ -1,0 +1,61 @@
+{extend name="base/base"/}
+{block name="extern"}
+{/block}
+{block name="content"}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">修改信息</a>
+      </span>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="formid" action="{:url('data/update_zxks')}" method='post' enctype="multipart/form-data">
+                <input type="hidden" name="number" value="{$news['news_id']}"/>
+                <input type="hidden" name="id" value="{$body['id']}"/>
+                <input type="hidden" name="page" value="{$Think.get.page}"/>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>考生号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="ksh" name="ksh" required="" lay-verify="required" autocomplete="off" class="layui-input" value="{$body['KSH']}"/></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="xm" name="xm" required="" lay-verify="required" autocomplete="off" class="layui-input" value="{$body['XM']}"/></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>身份证号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="sfzh" name="sfzh" required="" lay-verify="required" autocomplete="off" class="layui-input" value="{$body['SFZH']}"/></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>科目名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="km" name="km" required="" lay-verify="required" autocomplete="off" class="layui-input" value="{$body['KMM']}"/></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>分数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="fs" name="fs" required="" lay-verify="required" autocomplete="off" class="layui-input" value="{$body['FS']}"/></div>
+                </div>
+                <div class="layui-form-item">
+                <button class="layui-btn" lay-filter="add" lay-submit="">提交</button></div>
+            </form>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+    <script>
+        layui.use(['form', 'layer'],function(){
+            $ = layui.jquery;
+            var form = layui.form,
+            layer = layui.layer;
+        });
+    </script>
+{/block}

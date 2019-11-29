@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=7" />
+		<title></title>
+		<meta content="" name="keywords" />
+		<meta content="" name="description" />
+		<link rel="stylesheet" href="__CSS__/ks.min.css" />
+		
+	</head>
+
+	<body class="basc-bg-blu">
+		<!--内容区域-->
+		<div class="main">
+			<div class="main_lb">
+				<div class="main_lbTitle">
+					<div class="title  basc-bold">{$title}</div>
+					<div class="txt">Examination Information Query System</div>
+				</div>
+                <!--startprint-->
+				<div id="export_content" class="main_lc main_lf">
+					<div id="button" class="button">
+						<button class="btn" onclick="doPrint()">打印</button>
+						<button class="btn" id="exportToPdf">PDF下载</button>
+					</div>
+					<div id="user" class="user">
+						当前用户：{$Think.session.xm}
+                        <a class="right" href="{:url('message/logout')}?id={$id}">退出</a>
+					</div>
+					<!--左侧表格-->
+					<div class="formLeft">
+						<div class="title">
+							<p><b>{$title}</b></p>
+							<p><b>考点考场信息表</b></p>
+						</div>
+						<table class="table" border="0" cellpadding="0" cellspacing="0">
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考生编号</b></td>
+											<td class="txt1">{$body['KSH']}</td>
+											<td class="TxtName"><b>考生姓名</b></td>
+											<td class="txt1">{$body['XM']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>证件号码</b></td>
+											<td class="txt1">{$body['SFZH']}</td>
+											<td class="TxtName"><b>报名号</b></td>
+											<td class="txt1">{$body['BMH']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>报考点名称</b></td>
+											<td class="txt2">（{$body['BMDDM']}）{$body['BMDMC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>报考单位</b></td>
+											<td class="txt2">（{$body['BKDWDM']}）{$body['BKDWMC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>报考专业	</b></td>
+											<td class="txt2">（{$body['BKZYDM']}）{$body['BKZYMC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试日期</b></td>
+											<td class="txt1">{$body['ZZLLKSRQ']}</td>
+											<td class="TxtName"><b>科目名称</b></td>
+											<td class="txt1">（{$body['ZZLLM']}）{$body['ZZLLMC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试地点</b></td>
+											<td class="txt1">{$body['ZZLLKD']}</div>
+											<td class="TxtName"><b>考场号</b></td>
+											<td class="txt3">{$body['ZZLLKCBH']}</div>
+											<td class="TxtName2"><b>座位号</b></td>
+											<td class="txt4">{$body['ZZLLZWH']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考点地址</b></td>
+											<td class="txt2">{$body['ZZLLKDDZ']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试日期</b></td>
+											<td class="txt1">{$body['WGYKSRQ']}</td>
+											<td class="TxtName"><b>科目名称</b></td>
+											<td class="txt1">（{$body['WGYM']}）{$body['WGYMC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试地点</b></td>
+											<td class="txt1">{$body['WGYKD']}</td>
+											<td class="TxtName"><b>考场号</b></td>
+											<td class="txt3">{$body['WGYKCBH']}</td>
+											<td class="TxtName2"><b>座位号</b></td>
+											<td class="txt4">{$body['WGYZWH']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考点地址</b></td>
+											<td class="txt2">{$body['WGYKDDZ']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试日期</b></td>
+											<td class="txt1">{$body['YWK1KSRQ']}</td>
+											<td class="TxtName"><b>科目名称</b></td>
+											<td class="txt1">（{$body['YWK1M']}）{$body['YWK1MC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试地点</b></td>
+											<td class="txt1">{$body['YWK1KD']}</td>
+											<td class="TxtName"><b>考场号</b></td>
+											<td class="txt3">{$body['YWK1KCBH']}</td>
+											<td class="TxtName2"><b>座位号</b></td>
+											<td class="txt4">{$body['YWK1ZWH']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考点地址</b></td>
+											<td class="txt2">{$body['YWK1KDDZ']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试日期</b></td>
+											<td class="txt1">{$body['YWK2KSRQ']}</td>
+											<td class="TxtName"><b>科目名称</b></td>
+											<td class="txt1">（{$body['YWK2M']}）{$body['YWK2MC']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考试地点</b></td>
+											<td class="txt1">{$body['YWK2KD']}</td>
+											<td class="TxtName"><b>考场号</b></td>
+											<td class="txt3">{$body['YWK2KCBH']}</td>
+											<td class="TxtName2"><b>座位号</b></td>
+											<td class="txt4">{$body['YWK2ZWH']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							<!--line-->
+							<tr>
+								<td  class="td">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="TxtName"><b>考点地址</b></td>
+											<td class="txt2">{$body['YWK2KDDZ']}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<!--line end-->
+							
+						</table>
+					</div>
+					<!--右侧说明-->
+					<div class="formRight">
+						<div class="title">
+							<p><b>考试公告</b></p>
+						</div>
+						<div class="txtDiv">
+							<p>一、要树立诚信考试观念，珍惜个人名誉，遵守考试纪律，诚实守信、不舞弊，不携带违禁物品进入考场，严格履行考生守则。</p>
+							<p>二、不要购买所谓“研究生试题”，以免上当受骗，不要寻求“枪手”替考，也不要充当“枪手”替他人应考，违者将受到严厉查处。对作弊的考生，将视情节轻重给予暂停参加各种国家教育考试1至3年的处理，在校考生还将按有关规定予以处分直至开除学籍。考生作弊情况将记入全国统一考试考生诚信档案和考生的人事档案及信用体系。</p>
+							<p>三、依据《中华人民共和国刑法修正案（九）》的有关规定，在法律规定的国家考试中，组织作弊的，处三年以下有期徒刑或者拘役，并处或者单处罚金；情节严重的，处三年以上七年以下有期徒刑，并处罚金。为他人实施前款犯罪提供作弊器材或者其他帮助的，依照前款的规定处罚。为实施考试作弊行为，向他人非法出售或者提供第一款规定的考试的试题、答案的，依照第一款的规定处罚。代替他人或者让他人代替自己参加第一款规定的考试的，处拘役或者管制，并处或者单处罚金。</p>
+							<p>四、全国硕士研究生招生考试全部统考科目实行网上评卷，考生须在答题卡上进行答题。填涂客观题（选择题）答案时，须使用2B铅笔，作答主观题（非选择题）时，须使用黑色字迹签字笔，不能使用其他颜色或其他笔答题。考生须将答题内容填写在答题卡上对应题号规定的答题空间内，答案不能超出答题区域的黑色边框，不在对应题号规定的答题空间内答题或超出答题空间黑色边框的答案无效。因考生个人原因不得更换答题卡。</p>
+							<p>五、所有考生须持本人有效居民身份证和准考证参加考试，其他证件无效。</p>
+							<p>六、考生迟到15分钟后，不准进入考场参加当科考试。各科目开考150分钟后可以交卷出场。</p>
+							<p>七、考试期间，考生不得携带手表及其它计时用表进入考场。不得携带与当科次考试科目无关的文具，只有参加农学门类联考化学科目考试的考生允许使用不带字典存储和编程功能的科学计算器，其他统考科目考试中不允许使用计算器。招生单位自命题科目是否可以使用计算器以准考证上的招生单位说明为准。</p>
+							<p>八、考生各科次考试地点可能不同，考试前应了解每个科目考试地点的地址、路线及考场有关注意事项。</p>
+							<p>九、所有考场均安装有电子监控录像系统，对考试全过程进行录像。考后将进行录像回放审查，一经发现考生存在违规行为，将按照《国家教育考试违规处理办法》进行处理并记入考生诚信档案。</p>
+							<p>十、我省将加大对利用通讯设备作弊行为的打击力度，各考点将使用手机信号屏蔽器、无线耳机探测器以及金属探测器等多种防作弊设备，无线电管理部门也将加大对考试期间异常信号的监测，对作弊人员将依法移交公安部门严肃处理。</p>
+						</div>
+						<div class="smDiv">
+							<b>《考点考场信息表》不能替代准考证作用。考试期间正、反两面均不得涂改或书写。</b>
+						</div>
+					</div>
+				</div>
+                <!--endprint-->
+			</div>
+			<!--版权区域-->
+			<div class="main_ld">
+				<p>版权所有 辽宁省高中等教育招生考试委员会办公室 ICP证：辽B2-20120095</p>
+			</div>
+		</div>
+		<!--内容区域 end-->
+		<!--背景区域-->
+		<div class="main_la"></div>
+		<!--背景区域 end-->
+		<script>
+			var DEFAULT_VERSION = 8.0;  
+			var ua = navigator.userAgent.toLowerCase();  
+			var isIE = ua.indexOf("msie")>-1;  
+			var safariVersion;
+			if(isIE){  
+				safariVersion =  ua.match(/msie ([\d.]+)/)[1];  
+				if(safariVersion <= DEFAULT_VERSION ){  
+				  alert('系统检测到您正在使用ie8或以下内核的浏览器，不能实现完美体验，请更换或升级浏览器访问！')
+				}; 
+			}  
+		</script>
+        <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+        <script>
+            var id = {$Think.get.id};
+            var _pf=navigator.platform; 
+            var appVer=navigator.userAgent;
+            var system;
+            if(_pf=="Win32" || _pf == "Windows"){ 
+                system = 'Windows';
+            }else if(_pf == "Mac68K" || _pf == "MacPPC" || _pf == "Macintosh"){ 
+                system = "Mac"; 
+            }else if(_pf == "X11"){ 
+                system = "Unix"; 
+            }else if(String(_pf).indexOf("Linux") > -1){ 
+                system = "Linux"; 
+            }else{ 
+                system = "Unknow"; 
+            }
+            var url = returnCitySN["cip"];
+            var add = returnCitySN["cname"];
+            var xx = '考生号：<?php echo $body['KSH']?>，姓名：<?php echo $body['XM']?>，身份证号：<?php echo $body['SFZH']?>';
+            if (window.XMLHttpRequest){
+                // code for Firefox, Opera, IE7, etc.
+                ajax=new XMLHttpRequest();
+            }else if (window.ActiveXObject){
+                // code for IE6, IE5
+                ajax=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            ajax.open("POST", 'http://'+window.location.host+'/index/journal/record', true);
+            // 设置请求头数据传输格式
+            ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    
+            // 把query拼接成urlencoded
+            ajax.send("id="+id+"&system="+system+"&url="+url+"&add="+add+"&xx="+xx);
+            ajax.onreadystatechange = function () {
+                if(ajax.readyState === 4) {
+                    if(ajax.status === 200){
+                    }
+                }
+            }
+        </script>
+		<script>
+            function doPrint() {
+                document.getElementById('user').style.display ="none";
+                document.getElementById('button').style.display ="none";
+                bdhtml=window.document.body.innerHTML;
+                sprnstr="<!--startprint-->"; //开始打印标识字符串有17个字符
+                eprnstr="<!--endprint-->"; //结束打印标识字符串
+                prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); //从开始打印标识之后的内容
+                prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容
+                window.document.body.innerHTML=prnhtml; //把需要打印的指定内容赋给body.innerHTML
+                window.print(); //调用浏览器的打印功能打印指定区域
+                window.document.body.innerHTML=bdhtml; // 最后还原页面
+                document.getElementById('user').style.display ="block";
+                document.getElementById('button').style.display ="block";
+            }
+		</script>
+        <script src="__JS__/html2canvas.js"></script>
+        <script src="__JS__/jspdf.debug.js"></script>
+        <script type="text/javascript">
+            var downPdf = document.getElementById("exportToPdf");
+            downPdf.onclick = function () {	
+				if(isIE){  
+					safariVersion =  ua.match(/msie ([\d.]+)/)[1];  
+					if(safariVersion <= DEFAULT_VERSION ){  
+						alert('系统检测到您正在使用ie8或以下内核的浏览器，不能实现完美体验，请更换或升级浏览器访问！')
+						return;
+					}; 
+				}  
+                document.getElementById('user').style.display ="none";
+                document.getElementById('button').style.display ="none";
+                html2canvas(
+                        document.getElementById("export_content"),
+                        {
+                            dpi: 172,//导出pdf清晰度
+                            onrendered: function (canvas) {
+                                var contentWidth = canvas.width;
+                                var contentHeight = canvas.height;
+        
+                                //一页pdf显示html页面生成的canvas高度;
+                                var pageHeight = contentWidth / 592.28 * 841.89;
+                                //未生成pdf的html页面高度
+                                var leftHeight = contentHeight;
+                                //pdf页面偏移
+                                var position = 0;
+                                //html页面生成的canvas在pdf中图片的宽高（a4纸的尺寸[595.28,841.89]）
+                                var imgWidth = 595.28;
+                                var imgHeight = 592.28 / contentWidth * contentHeight;
+        
+                                var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                                var pdf = new jsPDF('', 'pt', 'a4');
+        
+                                //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                                //当内容未超过pdf一页显示的范围，无需分页
+                                if (leftHeight < pageHeight) {
+                                    pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                                } else {
+                                    while (leftHeight > 0) {
+                                        pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                                        leftHeight -= pageHeight;
+                                        position -= 841.89;
+                                        //避免添加空白页
+                                        if (leftHeight > 0) {
+                                            pdf.addPage();
+                                        }
+                                    }
+                                }
+                                pdf.save('content.pdf');
+                            },
+                            //背景设为白色（默认为黑色）
+                            background: "#fff"  
+                        })
+                
+                document.getElementById('user').style.display ="block";
+                document.getElementById('button').style.display ="block";
+            }
+        </script>
+	</body>
+
+</html>

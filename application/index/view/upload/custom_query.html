@@ -1,0 +1,47 @@
+{extend name="base/base"/}
+{block name="extern"}
+{/block}
+{block name="content"}
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">自定义查询项</a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="formid" action="{:url('upload/custom_query')}" method='post' enctype="multipart/form-data">
+                <input type="hidden" name="go" value="{$go}"/>
+                <input type="hidden" name="number" value="{$number}"/>
+                <div class="layui-form-item">
+                    <div style="margin-left: 110px;">
+                        {volist name='class' id="v"}
+                            <input type="checkbox" name="class[]" title="{$v.class_title}" value="{$v.class_id}" {if condition="in_array($v['class_id'],$news)"}checked="checked"{/if} />
+                        {/volist}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">{if condition="$go eq 1"}完成{else/}下一页{/if}</button></div>
+            </form>
+        </div>
+    </div>
+{/block}
+{block name="script"}
+    <script>layui.use(['form', 'layer'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+            layer = layui.layer;
+
+            //监听提交
+            form.on('submit(add)',
+            function(data) {
+                document.getElementById('formid').submit();
+            });
+
+        });
+    </script>
+{/block}
