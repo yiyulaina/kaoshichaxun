@@ -246,10 +246,10 @@ class Upload extends Check{
                             `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                             `KSH` CHAR (14) NOT NULL COMMENT '考生号',
                             `XM` CHAR (50) NOT NULL COMMENT '姓名',
-                            `KM1` float (6,1) NOT NULL COMMENT '科目1',
-                            `KM2` float (6,1) NOT NULL COMMENT '科目2',
-                            `KM3` float (6,1) NOT NULL COMMENT '科目3',
-                            `KM4` float (6,1) NOT NULL COMMENT '科目4',
+                            `KM1` decimal (6,1) NOT NULL COMMENT '科目1',
+                            `KM2` decimal (6,1) NOT NULL COMMENT '科目2',
+                            `KM3` decimal (6,1) NOT NULL COMMENT '科目3',
+                            `KM4` decimal (6,1) NOT NULL COMMENT '科目4',
                             `KMM1` CHAR (50) NOT NULL COMMENT '科目名1',
                             `KMM2` CHAR (50) NOT NULL COMMENT '科目名2',
                             `KMM3` CHAR (50) NOT NULL COMMENT '科目名3',
@@ -258,7 +258,7 @@ class Upload extends Check{
                             `ZYFX` CHAR (10) NOT NULL COMMENT '专业方向',
                             `ZMH` CHAR (15) NOT NULL COMMENT '专门化',
                             `JCKCJ` CHAR (15) NOT NULL COMMENT '基础课成绩',
-                            `ZF` float (6,1) NOT NULL COMMENT '分数',
+                            `ZF` decimal (6,1) NOT NULL COMMENT '分数',
                             `SFZH` CHAR (18) NOT NULL COMMENT '身份证号',
                             `type` TINYINT (1) NOT NULL COMMENT '专业分类 1 = 音乐舞蹈  2 = 美术  3 = 表演  4 = 导演  5 = 播音主持  6 =  戏剧 7 = 编导',
                               PRIMARY KEY (`id`),
@@ -1832,7 +1832,7 @@ class Upload extends Check{
                 if($news['news_type']==2){
                     $data = db($news['news_dbname'])->field(['KSH','XM','SFZH','concat(group_concat(KMM),"|",group_concat(0+CAST(FS as CHAR)),"|",group_concat(type))'=>'cj'])->group('KSH')->select();
                 }else if($news['news_type']==5){
-                    $data = db($news['news_dbname'])->field(['KSH','XM','SFZH','JCKCJ','concat(group_concat(KM1),"|",concat(group_concat(KM2),"|",concat(group_concat(KM3),"|",concat(group_concat(KM4),"|",concat(group_concat(KMM1),"|",concat(group_concat(KMM2),"|",concat(group_concat(KMM3),"|",concat(group_concat(KMM4),"|",concat(group_concat(KM),"|",group_concat(ZYFX),"|",group_concat(ZMH),"|",group_concat(ZF),"|",group_concat(type)))'=>'cj'])->group('KSH')->select();
+                    $data = db($news['news_dbname'])->field(['KSH','XM','SFZH','JCKCJ','concat(group_concat(KM1),"|",group_concat(KM2),"|",group_concat(KM3),"|",group_concat(KM4),"|",group_concat(KMM1),"|",group_concat(KMM2),"|",group_concat(KMM3),"|",group_concat(KMM4),"|",group_concat(KM),"|",group_concat(ZYFX),"|",group_concat(ZMH),"|",group_concat(ZF),"|",group_concat(type))'=>'cj'])->group('KSH')->select();
                 }else{
                     $data = db($news['news_dbname'])->select();
                 }

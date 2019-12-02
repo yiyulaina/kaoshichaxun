@@ -9,9 +9,10 @@ class Data extends Check{
         if(empty($_GET['number'])){
             $this -> error('找不到主体信息,请联系管理员！');
         }else{
-            $where = '';
             if(!empty($_GET['username'])){
                 $where['KSH|XM|SFZH'] = ['like','%'.$_GET['username'].'%'];
+            }else{
+                $where = '';
             }
             $news = db('news')->where('news_id = '.$_GET['number'])->find();
             $body =   db($news['news_dbname'])
@@ -29,9 +30,10 @@ class Data extends Check{
         if(empty($_GET['number'])){
             $this -> error('找不到主体信息,请联系管理员！');
         }else{
-            $where = '';
             if(!empty($_GET['username'])){
                 $where['KSH|XM|SFZH'] = ['like','%'.$_GET['username'].'%'];
+            }else{
+                $where = '';
             }
             $news = db('news')->where('news_id = '.$_GET['number'])->find();
             $body =   db($news['news_dbname'])
@@ -41,6 +43,77 @@ class Data extends Check{
                         ]);
             $sum = db($news['news_dbname'])->where($where)->sum('FS');
             $this -> assign('sum',$sum);
+            $this -> assign('news',$news);
+            $this -> assign('body',$body);
+            return $this->fetch();
+        }
+    }
+
+    //艺术类考试数据列表
+    public function index_ysks(){
+        if(empty($_GET['number'])){
+            $this -> error('找不到主体信息,请联系管理员！');
+        }else{
+            if(!empty($_GET['type'])){
+                $where['type'] = ['eq',$_GET['type']];
+            }else{
+                $where['type'] = ['eq',1];
+            }
+            if(!empty($_GET['username'])){
+                $where['KSH|XM|SFZH'] = ['like','%'.$_GET['username'].'%'];
+            }
+            $news = db('news')->where('news_id = '.$_GET['number'])->find();
+            $body =   db($news['news_dbname'])
+                        ->where($where)
+                        ->paginate(10,false,[
+                            'query' => array('number'=>$_GET['number'],'type'=>$_GET['type'])
+                        ]);
+            $sum = db($news['news_dbname'])->where($where)->sum('ZF');
+            $this -> assign('sum',$sum);
+            $this -> assign('news',$news);
+            $this -> assign('body',$body);
+            return $this->fetch();
+        }
+    }
+
+    //成人高考录取
+    public function index_crgk_lq(){
+        if(empty($_GET['number'])){
+            $this -> error('找不到主体信息,请联系管理员！');
+        }else{
+            if(!empty($_GET['username'])){
+                $where['KSH|XM|SFZH'] = ['like','%'.$_GET['username'].'%'];
+            }else{
+                $where = '';
+            }
+            $news = db('news')->where('news_id = '.$_GET['number'])->find();
+            $body =   db($news['news_dbname'])
+                        ->where($where)
+                        ->paginate(10,false,[
+                            'query' => array('number'=>$_GET['number'])
+                        ]);
+            $this -> assign('news',$news);
+            $this -> assign('body',$body);
+            return $this->fetch();
+        }
+    }
+
+    //成人高考录取
+    public function index_zsxx(){
+        if(empty($_GET['number'])){
+            $this -> error('找不到主体信息,请联系管理员！');
+        }else{
+            if(!empty($_GET['username'])){
+                $where['KSH|XM|SFZH'] = ['like','%'.$_GET['username'].'%'];
+            }else{
+                $where = '';
+            }
+            $news = db('news')->where('news_id = '.$_GET['number'])->find();
+            $body =   db($news['news_dbname'])
+                        ->where($where)
+                        ->paginate(6,false,[
+                            'query' => array('number'=>$_GET['number'])
+                        ]);
             $this -> assign('news',$news);
             $this -> assign('body',$body);
             return $this->fetch();
@@ -146,6 +219,7 @@ class Data extends Check{
                             '2'=>'index_zxks',
                             '3'=>'index_zsxx',
                             '4'=>'index_crgk_lq',
+                            '5'=>'index_ysks',
                             );
                         echo "<script>alert('删除成功！');location.href='/index/data/".$tz_url[$news['news_type']]."?number=".$_GET['number']."&page=".$_GET['page']."';</script>";
                         die;

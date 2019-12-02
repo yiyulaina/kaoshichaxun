@@ -17,19 +17,8 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-body ">
-                            <form action="{:url('data/index_ysks')}" class="layui-form layui-col-space5">
+                            <form action="{:url('data/index_crgk_lq')}" class="layui-form layui-col-space5">
                                 <input type="hidden" name="number" value="{$news['news_id']}"/>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <select name="type">
-                                        <option {if condition='$Think.get.type eq 1'}selected="selected"{/if} value="1">音乐舞蹈专业</option>
-                                        <option {if condition='$Think.get.type eq 2'}selected="selected"{/if} value="2">美术专业</option>
-                                        <option {if condition='$Think.get.type eq 3'}selected="selected"{/if} value="3">表演</option>
-                                        <option {if condition='$Think.get.type eq 4'}selected="selected"{/if} value="4">戏剧影视导演</option>
-                                        <option {if condition='$Think.get.type eq 5'}selected="selected"{/if} value="5">播音与主持艺术</option>
-                                        <option {if condition='$Think.get.type eq 6'}selected="selected"{/if} value="6">戏剧影视文学</option>
-                                        <option {if condition='$Think.get.type eq 7'}selected="selected"{/if} value="7">广播电视编导</option>
-                                    </select>
-                                </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="username"  placeholder="请输入内容" autocomplete="off" class="layui-input" value="{$Think.get.username}"/>
                                 </div>
@@ -49,20 +38,10 @@
                                         <th>考生号</th>
                                         <th>姓名</th>
                                         <th>身份证号</th>
-                                        {switch Think.get.type}
-                                            {case 1}
-                                                <th>基础课成绩</th>
-                                                <th>科目</th>
-                                                <th>专业方向</th>
-                                                <th>专门化</th>
-                                            {/case}
-                                            {default /}
-                                                {if condition='$body.0.KMM1 neq null'}<th>{$body.0.KMM1}</th>{/if}
-                                                {if condition='$body.0.KMM2 neq null'}<th>{$body.0.KMM2}</th>{/if}
-                                                {if condition='$body.0.KMM3 neq null'}<th>{$body.0.KMM3}</th>{/if}
-                                                {if condition='$body.0.KMM4 neq null'}<th>{$body.0.KMM4}</th>{/if}
-                                        {/switch}
-                                        <th>总分(分数总和为：{$sum})</th>
+                                        <th>层次名称</th>
+                                        <th>院校名称</th>
+                                        <th>专业名称</th>
+                                        <th>学制年限</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -76,20 +55,10 @@
                                             <td>{$v.KSH}</td>
                                             <td>{$v.XM}</td>
                                             <td>{$v.SFZH}</td>
-                                            {switch Think.get.type}
-                                                {case 1}
-                                                    <td>{$v.JCKCJ}</td>
-                                                    <td>{$v.KM}</td>
-                                                    <td>{$v.ZYFX}</td>
-                                                    <td>{$v.ZMH}</td>
-                                                {/case}
-                                                {default /}
-                                                    {if condition='$v.KM1 neq 0'}<th>{$v.KM1}</th>{/if}
-                                                    {if condition='$v.KM2 neq 0'}<th>{$v.KM2}</th>{/if}
-                                                    {if condition='$v.KM3 neq 0'}<th>{$v.KM3}</th>{/if}
-                                                    {if condition='$v.KM4 neq 0'}<th>{$v.KM4}</th>{/if}
-                                            {/switch}
-                                            <td>{$v.ZF}</td>
+                                            <td>{$v.CCMC}</td>
+                                            <td>{$v.YXMC}</td>
+                                            <td>{$v.ZYMC}</td>
+                                            <td>{$v.XZNX}</td>
                                             <td class="td-manage">
                                                 <a title="删除" onclick="if_confirm({$v.id})" href="javascript:void(0);">
                                                     <i class="layui-icon">&#xe640;</i>
@@ -134,10 +103,4 @@
             });
         }
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
 {/block}
